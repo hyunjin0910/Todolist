@@ -1,0 +1,19 @@
+body {
+  background-color: rgb(246, 247, 247);
+}
+
+.app {
+  width: 500px;
+  height: 100vh;
+  margin: 0 auto;
+  background-color: white;
+  border: 2px solid black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 40px;
+}
+
+/* .ant-btn-primary {
+  background-color: palevioletred;
+} */

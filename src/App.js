@@ -1,9 +1,9 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { SignIn, SignUp, Home, TodoList, CreateTodo } from "./pages/index";
-
+import "./App.css";
 const App = () => {
   return (
-    <>
+    <div className="app">
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -13,7 +13,7 @@ const App = () => {
           <Route path="/createTodo" element={<CreateTodo />} />
         </Routes>
       </BrowserRouter>
-    </>
+    </div>
   );
 };
 
