@@ -27,8 +27,14 @@ const SignIn = () => {
         password: values.password,
       });
       const { access_token } = data;
-      localStorage.setItem("TOKEN", access_token);
-      navigate("/todos");
+      
+      if (access_token === undefined) {
+        const { message } = data;
+        message !== "Unauthorized" ? alert(message) : alert("비밀번호가 틀렸습니다");
+      } else {
+        localStorage.setItem("TOKEN", access_token);
+        navigate("/todos");
+      }
     },
 
     validate: ({ email, password }) => {

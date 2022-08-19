@@ -18,8 +18,8 @@ const useForm = ({ initialValue, onSubmit, validate }) => {
     if (Object.keys(errors).length === 0) {
       try {
         await onSubmit(values);
-      } catch {
-        alert("이메일이나 비밀번호를 확인해주세요");
+      } catch (error){
+       return error
       }
     }
     setIsLoading(false);

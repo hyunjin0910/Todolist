@@ -7,5 +7,14 @@ export const fetchPostLogin = async (loginUser) => {
   } catch (error) {
     return error;
   }
- 
+};
+
+export const fetchPostSignUp = async (signUpUser) => {
+  try {
+    const { data } = await postData("/auth/signup", signUpUser);
+    return data;
+  } catch (error) {
+    const { data } = await error;
+    return data;
+  }
 };
