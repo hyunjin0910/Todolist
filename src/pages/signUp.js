@@ -1,5 +1,6 @@
 import { Button, Input } from "antd";
 import styled from "@emotion/styled";
+
 const SignUp = () => {
   return (
     <Wrapper>

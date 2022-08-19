@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { SignIn, SignUp, Home, TodoList, CreateTodo } from "./pages/index";
 import "./App.css";
+import "antd/dist/antd.css";
 const App = () => {
   return (
     <div className="app">
