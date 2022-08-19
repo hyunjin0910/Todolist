@@ -4,8 +4,17 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { fetchPostLogin } from "../api/fetchData";
 import useForm from "../hooks/useForm";
+import { useEffect } from "react";
+
 const SignIn = () => {
   const navigate = useNavigate();
+  const token = localStorage.getItem("TOKEN");
+  useEffect(() => {
+    if (token !== null) {
+      navigate("/todos");
+    }
+  }, []);
+
   const { values, errors, handleChange, handleSubmit } = useForm({
     initialValue: {
       email: "",
@@ -19,7 +28,7 @@ const SignIn = () => {
       });
       const { access_token } = data;
       localStorage.setItem("TOKEN", access_token);
-      navigate("/todos/list");
+      navigate("/todos");
     },
 
     validate: ({ email, password }) => {
