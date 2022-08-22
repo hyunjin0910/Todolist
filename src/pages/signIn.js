@@ -13,9 +13,9 @@ const SignIn = () => {
     if (token !== null) {
       navigate("/todos");
     }
-  }, []);
+  }, [navigate, token]);
 
-  const { values, errors, handleChange, handleSubmit } = useForm({
+  const { errors, handleChange, handleSubmit } = useForm({
     initialValue: {
       email: "",
       password: "",
@@ -27,7 +27,7 @@ const SignIn = () => {
         password: values.password,
       });
       const { access_token } = data;
-      
+
       if (access_token === undefined) {
         const { message } = data;
         message !== "Unauthorized" ? alert(message) : alert("비밀번호가 틀렸습니다");

@@ -6,7 +6,7 @@ import useForm from "../hooks/useForm";
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const { values, errors, handleChange, handleSubmit } = useForm({
+  const { errors, handleChange, handleSubmit } = useForm({
     initialValue: {
       email: "",
       password: "",
