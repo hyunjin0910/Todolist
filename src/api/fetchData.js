@@ -1,4 +1,13 @@
-import { postData } from "./request";
+import { getData, postData } from "./request";
+
+export const fetchTodoList = async () => {
+  try {
+    const { data } = await getData("/todos");
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
 
 export const fetchPostLogin = async (loginUser) => {
   try {

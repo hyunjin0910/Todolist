@@ -28,13 +28,13 @@ const TodoItem = ({ data }) => {
       <InputContainer>
         {isEdit ? (
           <Input
-            value={data.title}
+            value={data.todo}
             style={{
               width: 100,
             }}
           />
         ) : (
-          <span className={isChecked ? "checked" : ""}>{data.title}</span>
+          <span className={isChecked ? "checked" : ""}>{data.todo}</span>
         )}
       </InputContainer>
       <IconContainer>
