@@ -6,11 +6,23 @@ import { useState } from "react";
 import { deleteTodo, updateTodo } from "../api/fetchData";
 const TodoItem = ({ data }) => {
   const [isEdit, setIsEdit] = useState(false);
+  const [changedTodo, setChangedTodo] = useState("");
   const handleCheck = () => {
     updateTodo(data.id, { todo: data.todo, isCompleted: !data.isCompleted });
   };
+
+  const handleChange = (e) => {
+    return setChangedTodo(e.target.value);
+  };
+
+  const saveChange = () => {
+    updateTodo(data.id, { todo: changedTodo, isCompleted: data.isCompleted });
+    setIsEdit(!isEdit);
+    setChangedTodo("");
+  };
+
   const handleEdit = () => {
-    console.log(data.todo.length);
+    setChangedTodo(data.todo);
     setIsEdit(!isEdit);
   };
   const handleDelete = () => {
@@ -30,10 +42,11 @@ const TodoItem = ({ data }) => {
       <InputContainer>
         {isEdit ? (
           <Input
-            value={data.todo}
+            value={changedTodo}
             style={{
-              width: data.todo.length * 20,
+              width: data.todo.length * 30,
             }}
+            onChange={handleChange}
           />
         ) : (
           <span className={data.isCompleted ? "checked" : ""}>{data.todo}</span>
@@ -41,7 +54,9 @@ const TodoItem = ({ data }) => {
       </InputContainer>
       {isEdit ? (
         <ButtonContainer>
-          <Button type="primary">제출</Button>
+          <Button type="primary" onClick={saveChange}>
+            제출
+          </Button>
           <Button type="danger" onClick={handleEdit}>
             취소
           </Button>
