@@ -3,7 +3,16 @@ import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
 import TodoItem from "../components/TodoItem";
 import { fetchTodoList, createTodo } from "../api/fetchData";
+import { useNavigate } from "react-router-dom";
 const TodoList = () => {
+  const navigate = useNavigate();
+  const token = localStorage.getItem("TOKEN");
+  useEffect(() => {
+    if (token === null) {
+      navigate("/signIn");
+    }
+  }, [navigate, token]);
+
   const [todos, setTodos] = useState([]);
 
   const getData = async () => {
