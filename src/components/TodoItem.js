@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Input } from "antd";
+import { Input, Button } from "antd";
 import React from "react";
 import { Edit2, Trash2, Square, CheckSquare } from "react-feather";
 import { useState } from "react";
@@ -10,6 +10,7 @@ const TodoItem = ({ data }) => {
     updateTodo(data.id, { todo: data.todo, isCompleted: !data.isCompleted });
   };
   const handleEdit = () => {
+    console.log(data.todo.length);
     setIsEdit(!isEdit);
   };
   const handleDelete = () => {
@@ -18,25 +19,39 @@ const TodoItem = ({ data }) => {
   return (
     <TodoWrapper>
       {data.isCompleted ? (
-        <CheckSquare onClick={handleCheck} />
+        <IconContainer>
+          <CheckSquare onClick={handleCheck} />
+        </IconContainer>
       ) : (
-        <Square onClick={handleCheck} />
+        <IconContainer>
+          <Square onClick={handleCheck} />
+        </IconContainer>
       )}
       <InputContainer>
         {isEdit ? (
           <Input
             value={data.todo}
             style={{
-              width: 100,
+              width: data.todo.length * 20,
             }}
           />
         ) : (
           <span className={data.isCompleted ? "checked" : ""}>{data.todo}</span>
         )}
       </InputContainer>
-      <IconContainer>
-        <Edit2 onClick={handleEdit} />
-      </IconContainer>
+      {isEdit ? (
+        <ButtonContainer>
+          <Button type="primary">제출</Button>
+          <Button type="danger" onClick={handleEdit}>
+            취소
+          </Button>
+        </ButtonContainer>
+      ) : (
+        <IconContainer>
+          <Edit2 onClick={handleEdit} />
+        </IconContainer>
+      )}
+
       <IconContainer>
         <Trash2 onClick={handleDelete} />
       </IconContainer>
@@ -49,6 +64,10 @@ export default TodoItem;
 const TodoWrapper = styled.div`
   display: flex;
   margin: 0.5rem 0;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
 `;
 
 const InputContainer = styled.div`
