@@ -1,14 +1,13 @@
 import styled from "@emotion/styled";
 import { Input } from "antd";
 import React from "react";
-import { Edit2, Trash2 } from "react-feather";
+import { Edit2, Trash2, Square, CheckSquare } from "react-feather";
 import { useState } from "react";
-import { deleteTodo } from "../api/fetchData";
+import { deleteTodo, updateTodo } from "../api/fetchData";
 const TodoItem = ({ data }) => {
-  const [isChecked, setIsChecked] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const handleCheck = () => {
-    setIsChecked(!isChecked);
+    updateTodo(data.id, { todo: data.todo, isCompleted: !data.isCompleted });
   };
   const handleEdit = () => {
     setIsEdit(!isEdit);
@@ -18,13 +17,11 @@ const TodoItem = ({ data }) => {
   };
   return (
     <TodoWrapper>
-      <Input
-        type="checkbox"
-        style={{
-          width: 20,
-        }}
-        onClick={handleCheck}
-      />
+      {data.isCompleted ? (
+        <CheckSquare onClick={handleCheck} />
+      ) : (
+        <Square onClick={handleCheck} />
+      )}
       <InputContainer>
         {isEdit ? (
           <Input
@@ -34,7 +31,7 @@ const TodoItem = ({ data }) => {
             }}
           />
         ) : (
-          <span className={isChecked ? "checked" : ""}>{data.todo}</span>
+          <span className={data.isCompleted ? "checked" : ""}>{data.todo}</span>
         )}
       </InputContainer>
       <IconContainer>

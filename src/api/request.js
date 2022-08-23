@@ -60,4 +60,21 @@ export const deleteData = async (path, id) => {
   }
 };
 
+export const updateData = async (path, id, updatedInfo) => {
+  const baseURL = process.env.REACT_APP_URL;
+  const URL = baseURL + path + `/${id}`;
+  const accessToken = localStorage.getItem("TOKEN");
+  try {
+    const response = await axios.put(URL, updatedInfo, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-type": `application/json`,
+      },
+    });
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};
+
 
