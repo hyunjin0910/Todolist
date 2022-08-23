@@ -2,7 +2,7 @@ import { Button, Input } from "antd";
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
 import TodoItem from "../components/TodoItem";
-import { fetchTodoList } from "../api/fetchData";
+import { fetchTodoList, createTodo } from "../api/fetchData";
 const TodoList = () => {
   const [todos, setTodos] = useState([]);
 
@@ -13,11 +13,12 @@ const TodoList = () => {
   };
   useEffect(() => {
     getData();
-  });
+  }, [todos]);
 
   const [newTodo, setNewTodo] = useState("");
   const handleAddClick = () => {
-    setTodos([...todos, { id: todos.length + 1, todo: newTodo }]);
+    createTodo({ todo: newTodo });
+    getData();
     setNewTodo("");
   };
   const handleChange = (e) => {
