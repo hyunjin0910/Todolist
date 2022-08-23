@@ -16,8 +16,24 @@ export const getData = async (path) => {
   }
 };
 
+export const postData = async (path, newTodo) => {
+  const baseURL = process.env.REACT_APP_URL;
+  const URL = baseURL + path;
+  const accessToken = localStorage.getItem("TOKEN");
+  try {
+    const response = await axios.post(URL, newTodo, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-type": `application/json`,
+      },
+    });
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};
 
-export const postData = async (path, userInfo) => {
+export const postUser = async (path, userInfo) => {
   const baseURL = process.env.REACT_APP_URL;
   const URL = baseURL + path;
   try {

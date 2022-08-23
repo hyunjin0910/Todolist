@@ -1,4 +1,23 @@
-import { getData, postData } from "./request";
+import { postUser, getData, postData } from "./request";
+
+export const fetchPostLogin = async (loginUser) => {
+  try {
+    const { data } = await postUser("/auth/signin", loginUser);
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const fetchPostSignUp = async (signUpUser) => {
+  try {
+    const { data } = await postUser("/auth/signup", signUpUser);
+    return data;
+  } catch (error) {
+    const { data } = await error;
+    return data;
+  }
+};
 
 export const fetchTodoList = async () => {
   try {
@@ -9,21 +28,11 @@ export const fetchTodoList = async () => {
   }
 };
 
-export const fetchPostLogin = async (loginUser) => {
+export const createTodo = async (newTodo) => {
   try {
-    const { data } = await postData("/auth/signin", loginUser);
+    const { data } = await postData("/todos", newTodo);
     return data;
   } catch (error) {
     return error;
-  }
-};
-
-export const fetchPostSignUp = async (signUpUser) => {
-  try {
-    const { data } = await postData("/auth/signup", signUpUser);
-    return data;
-  } catch (error) {
-    const { data } = await error;
-    return data;
   }
 };
