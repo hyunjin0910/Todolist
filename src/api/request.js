@@ -1,5 +1,16 @@
 import axios from "axios";
 
+export const postUser = async (path, userInfo) => {
+  const baseURL = process.env.REACT_APP_URL;
+  const URL = baseURL + path;
+  try {
+    const response = await axios.post(URL, userInfo);
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};
+
 export const getData = async (path) => {
   const baseURL = process.env.REACT_APP_URL;
   const URL = baseURL + path;
@@ -33,13 +44,20 @@ export const postData = async (path, newTodo) => {
   }
 };
 
-export const postUser = async (path, userInfo) => {
+export const deleteData = async (path, id) => {
   const baseURL = process.env.REACT_APP_URL;
-  const URL = baseURL + path;
+  const URL = baseURL + path + `/${id}`;
+  const accessToken = localStorage.getItem("TOKEN");
   try {
-    const response = await axios.post(URL, userInfo);
+    const response = await axios.delete(URL, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
     return response;
   } catch (error) {
     return error.response;
   }
 };
+
+

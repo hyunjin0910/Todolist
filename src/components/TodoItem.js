@@ -3,10 +3,10 @@ import { Input } from "antd";
 import React from "react";
 import { Edit2, Trash2 } from "react-feather";
 import { useState } from "react";
+import { deleteTodo } from "../api/fetchData";
 const TodoItem = ({ data }) => {
   const [isChecked, setIsChecked] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
-  const [isDeleted, setIsDeleted] = useState(false);
   const handleCheck = () => {
     setIsChecked(!isChecked);
   };
@@ -14,7 +14,7 @@ const TodoItem = ({ data }) => {
     setIsEdit(!isEdit);
   };
   const handleDelete = () => {
-    setIsDeleted(!isDeleted);
+    deleteTodo(data.id);
   };
   return (
     <TodoWrapper>

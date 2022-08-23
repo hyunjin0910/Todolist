@@ -1,4 +1,4 @@
-import { postUser, getData, postData } from "./request";
+import { postUser, getData, postData, deleteData } from "./request";
 
 export const fetchPostLogin = async (loginUser) => {
   try {
@@ -31,6 +31,15 @@ export const fetchTodoList = async () => {
 export const createTodo = async (newTodo) => {
   try {
     const { data } = await postData("/todos", newTodo);
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const deleteTodo = async (id) => {
+  try {
+    const { data } = await deleteData("/todos", id);
     return data;
   } catch (error) {
     return error;
