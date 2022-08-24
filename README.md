@@ -1,70 +1,62 @@
-# Getting Started with Create React App
+## 프로젝트 실행방법
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+`yarn start` 
 
-## Available Scripts
+## 배포 링크 & 데모 영상
 
-In the project directory, you can run:
+👉 [과제 링크](https://todolist-pre-onboarding.netlify.app/)  
 
-### `yarn start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 데모 영상
+https://user-images.githubusercontent.com/95457808/186325463-9e6873d0-1f7b-4411-8045-9bca001c15dd.mov
 
-### `yarn test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 페이지 설명
 
-### `yarn build`
+### 1. 홈 화면
+<img width="492" alt="홈화면" src="https://user-images.githubusercontent.com/95457808/186326209-17903f3b-00e9-4ac5-b750-688a88a7374a.png">
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- 사이트에 들어가면 가장 처음에 나오는 화면
+- 로그인 페이지 or 회원가입 페이지로 이동 가능
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 2. 회원 가입 페이지
+<img width="493" alt="회원가입페이지" src="https://user-images.githubusercontent.com/95457808/186326208-58d1dde4-31d2-44b8-b0f5-f3c97a59147b.png">
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+#### 유효성 검사
+- [x] 이메일 조건: @ 포함
+- [x] 비밀번호 조건: 8자 이상
+- [x] 입력된 이메일과 비밀번호가 위 조건을 만족할 때만 버튼이 활성화 (회색 -> 파란색으로 변경)
 
-### `yarn eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### 3. 로그인 페이지
+<img width="490" alt="로그인 페이지" src="https://user-images.githubusercontent.com/95457808/186326205-ccf76e7f-89e7-4de1-8a2f-61187443d5ba.png">
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+#### 유효성 검사
+- [x] 이메일 조건: @ 포함
+- [x] 비밀번호 조건: 8자 이상
+- [x] 입력된 이메일과 비밀번호가 위 조건을 만족할 때만 버튼이 활성화 (회색 -> 파란색으로 변경)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+#### 토큰
+- [x] 로그인 성공 시 해당 유저의 토큰이 로컬 스토리지에 "TOKEN"이라는 키로 저장됨
+- [x] 로컬 스토리지에 토큰이 있는 상태에서 로그인 페이지 접속 시 /todo 경로로 리다이렉트 됨
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### 4. 할일 목록 페이지
+<img width="499" alt="목록" src="https://user-images.githubusercontent.com/95457808/186326210-92faef2f-7d2d-4a88-b8c6-51d59c39dce2.png">
 
-## Learn More
+- [x] /todo경로에 접속하면 투두 리스트의 목록을 볼 수 있음
+- [x] 체크 박스 클릭을 통해 완료 여부를 표시할 수 있음
+- [x] "추가하기" 버튼을 클릭해서 새로운 할 일을 추가할 수 있음
+- [x] 연필 모양 아이콘 클릭 시 수정 가능 
+    - “제출” 버튼을 누르면 입력한 내용으로 할일이 수정됨
+    - “취소" 버튼을 누르면 내용이 수정되지 않고 유지
+- [x] 휴지통 모양 아이콘 클릭 시 삭제 가능 
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 사용한 라이브러리
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- UI
+    - emotion
+    - feather-icon
+    - ant design
+- React Router
+- Axios
