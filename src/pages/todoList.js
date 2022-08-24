@@ -7,22 +7,18 @@ import { useNavigate } from "react-router-dom";
 const TodoList = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("TOKEN");
-  useEffect(() => {
-    if (token === null) {
-      navigate("/signIn");
-    }
-  }, [navigate, token]);
-
   const [todos, setTodos] = useState([]);
-
   const getData = async () => {
     const data = await fetchTodoList();
     setTodos(data);
     return data;
   };
   useEffect(() => {
+    if (token === null) {
+      navigate("/signIn");
+    }
     getData();
-  }, [todos]);
+  }, [navigate, token]);
 
   const [newTodo, setNewTodo] = useState("");
   const handleAddClick = () => {
@@ -56,7 +52,6 @@ const TodoList = () => {
     </Wrapper>
   );
 };
-
 export default TodoList;
 
 const Wrapper = styled.div`
