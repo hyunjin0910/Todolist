@@ -18,7 +18,7 @@ const TodoList = () => {
       navigate("/signIn");
     }
     getData();
-  }, [navigate, token]);
+  }, [navigate, token, todos]);
 
   const [newTodo, setNewTodo] = useState("");
   const handleAddClick = () => {
