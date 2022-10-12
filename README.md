@@ -4,7 +4,7 @@
 
 ## 배포 링크 & 데모 영상
 
-👉 [과제 링크](https://todolist-pre-onboarding.netlify.app/)  
+👉 [과제 링크](https://lighthearted-donut-8774a9.netlify.app/signIn)  
 
 
 
