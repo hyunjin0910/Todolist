@@ -2,7 +2,8 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const POSTS_URL = process.env.REACT_APP_URL;
-
+const URL = `${POSTS_URL}/todos`;
+const accessToken = localStorage.getItem("TOKEN");
 const initialState = {
   posts: [],
   status: "idle", //'idle' | 'loading' | 'succeeded' | 'failed'
@@ -10,9 +11,6 @@ const initialState = {
 };
 
 export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
-  const URL = `${POSTS_URL}/todos`;
-  const accessToken = localStorage.getItem("TOKEN");
-
   try {
     const response = await axios.get(URL, {
       headers: {
@@ -26,10 +24,39 @@ export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
 });
 
 export const addNewPost = createAsyncThunk("posts/addNewPost", async (newTodo) => {
-  const URL = `${POSTS_URL}/todos`;
-  const accessToken = localStorage.getItem("TOKEN");
   try {
     const response = await axios.post(URL, newTodo, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-type": `application/json`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    return error.response;
+  }
+});
+
+export const deletePost = createAsyncThunk("posts/deletePost", async (id) => {
+  const idURL = URL + `/${id}`;
+
+  try {
+    const response = await axios.delete(idURL, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    return error.response;
+  }
+});
+
+export const updatePost = createAsyncThunk("posts/updatePost", async (editData) => {
+  const [id, updatedInfo] = editData;
+  const idURL = URL + `/${id}`;
+  try {
+    const response = await axios.put(idURL, updatedInfo, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
         "Content-type": `application/json`,
@@ -74,6 +101,13 @@ const postsSlice = createSlice({
       })
       .addCase(addNewPost.fulfilled, (state, action) => {
         state.posts.push(action.payload);
+      })
+      .addCase(deletePost.fulfilled, (state, action) => {
+        state.status = "idle";
+        console.log(action.payload);
+      })
+      .addCase(updatePost.fulfilled, (state, action) => {
+        state.status = "idle";
       });
   },
 });
