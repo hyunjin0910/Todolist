@@ -32,7 +32,6 @@ const TodoList = () => {
 
   const [newTodo, setNewTodo] = useState("");
   const handleAddClick = () => {
-    console.log(newTodo);
     dispatch(addNewPost({ todo: newTodo }));
     setNewTodo("");
   };

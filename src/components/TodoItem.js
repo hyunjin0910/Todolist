@@ -3,20 +3,24 @@ import { Input, Button } from "antd";
 import React from "react";
 import { Edit2, Trash2, Square, CheckSquare } from "react-feather";
 import { useState } from "react";
-import { deleteTodo, updateTodo } from "../api/fetchData";
+import { useDispatch } from "react-redux";
+import { deletePost, updatePost } from "../features/todos/todoSlice";
 const TodoItem = ({ data }) => {
+  const dispatch = useDispatch();
   const [isEdit, setIsEdit] = useState(false);
   const [changedTodo, setChangedTodo] = useState("");
   const handleCheck = () => {
-    updateTodo(data.id, { todo: data.todo, isCompleted: !data.isCompleted });
+    const completeData = [data.id, { todo: data.todo, isCompleted: !data.isCompleted }];
+    dispatch(updatePost(completeData));
   };
 
   const handleChange = (e) => {
-    return setChangedTodo(e.target.value);
+    setChangedTodo(e.target.value);
   };
 
   const saveChange = () => {
-    updateTodo(data.id, { todo: changedTodo, isCompleted: data.isCompleted });
+    const editData = [data.id, { todo: changedTodo, isCompleted: data.isCompleted }];
+    dispatch(updatePost(editData));
     setIsEdit(!isEdit);
     setChangedTodo("");
   };
@@ -26,7 +30,7 @@ const TodoItem = ({ data }) => {
     setIsEdit(!isEdit);
   };
   const handleDelete = () => {
-    deleteTodo(data.id);
+    dispatch(deletePost(data.id));
   };
   return (
     <TodoWrapper>
