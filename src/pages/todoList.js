@@ -2,32 +2,42 @@ import { Button, Input } from "antd";
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
 import TodoItem from "../components/TodoItem";
-import { fetchTodoList, createTodo } from "../api/fetchData";
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  selectAllPosts,
+  getPostsStatus,
+  getPostsError,
+  fetchPosts,
+  addNewPost,
+} from "../features/todos/todoSlice";
+
 const TodoList = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("TOKEN");
-  const [todos, setTodos] = useState([]);
-  const getData = async () => {
-    const data = await fetchTodoList();
-    setTodos(data);
-    return data;
-  };
+  const dispatch = useDispatch();
+
+  const posts = useSelector(selectAllPosts);
+  const postStatus = useSelector(getPostsStatus);
+  const error = useSelector(getPostsError);
+
   useEffect(() => {
     if (token === null) {
       navigate("/signIn");
     }
-    getData();
-  }, [navigate, token, todos]);
+    if (postStatus === "idle") {
+      dispatch(fetchPosts());
+    }
+  }, [postStatus, dispatch]);
 
   const [newTodo, setNewTodo] = useState("");
   const handleAddClick = () => {
-    createTodo({ todo: newTodo });
-    getData();
+    console.log(newTodo);
+    dispatch(addNewPost({ todo: newTodo }));
     setNewTodo("");
   };
   const handleChange = (e) => {
-    return setNewTodo(e.target.value);
+    setNewTodo(e.target.value);
   };
 
   return (
@@ -46,7 +56,7 @@ const TodoList = () => {
         추가하기
       </Button>
       <ListWrapper>
-        {todos.map((todo, idx) => (
+        {posts.map((todo, idx) => (
           <TodoItem data={todo} key={idx} />
         ))}
       </ListWrapper>
