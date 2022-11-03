@@ -1,14 +1,16 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, createEntityAdapter } from "@reduxjs/toolkit";
 import axios from "axios";
 import { sub } from "date-fns";
 const POSTS_URL = process.env.REACT_APP_URL;
 const URL = `${POSTS_URL}/todos`;
 const accessToken = localStorage.getItem("TOKEN");
-const initialState = {
-  posts: [],
+
+const postsAdapter = createEntityAdapter();
+
+const initialState = postsAdapter.getInitialState({
   status: "idle", //'idle' | 'loading' | 'succeeded' | 'failed'
   error: null,
-};
+});
 
 export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
   try {
@@ -106,6 +108,7 @@ const postsSlice = createSlice({
       })
       .addCase(fetchPosts.fulfilled, (state, action) => {
         state.status = "succeeded";
+
         const loadedPosts = action.payload.map((post) => {
           post.date = new Date().toISOString();
           post.reactions = {
@@ -117,7 +120,8 @@ const postsSlice = createSlice({
           };
           return post;
         });
-        state.posts = state.posts.concat(loadedPosts);
+
+        postsAdapter.upsertMany(state, loadedPosts);
       })
       .addCase(fetchPosts.rejected, (state, action) => {
         state.status = "failed";
@@ -133,7 +137,7 @@ const postsSlice = createSlice({
           rocket: 0,
           coffee: 0,
         };
-        state.posts.push(loadedPosts);
+        postsAdapter.addOne(state, loadedPosts);
       })
       .addCase(deletePost.fulfilled, (state, action) => {
         const id = action.payload;
@@ -141,22 +145,25 @@ const postsSlice = createSlice({
           console.log("Delete could not complete");
           return;
         }
-        const posts = state.posts.filter((post) => post.id !== id);
-        state.posts = posts;
+        postsAdapter.removeOne(state, id);
       })
       .addCase(updatePost.fulfilled, (state, action) => {
         if (!action.payload?.id) {
           console.log("Update could not complete");
           return;
         }
-        const { id } = action.payload;
-        const posts = state.posts.filter((post) => post.id !== id);
-        state.posts = [...posts, action.payload];
+        action.payload.date = new Date().toISOString();
+        postsAdapter.upsertOne(state, action.payload);
       });
   },
 });
 
-export const selectAllPosts = (state) => state.posts.posts;
+export const {
+  selectAll: selectAllPosts,
+  selectById: selectPostById,
+  selectIds: selectPostIds,
+} = postsAdapter.getSelectors((state) => state.posts);
+
 export const getPostsStatus = (state) => state.posts.status;
 export const getPostsError = (state) => state.posts.error;
 
