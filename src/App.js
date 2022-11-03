@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { SignIn, SignUp, Home, TodoList, Test } from "./pages/index";
+import { SignIn, SignUp, Home, TodoList } from "./pages/index";
 import "./App.css";
 import "antd/dist/antd.css";
 import { store } from "./store";
@@ -11,7 +11,6 @@ const App = () => {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/test" element={<Test />} />
             <Route path="/signUp" element={<SignUp />} />
             <Route path="/signIn" element={<SignIn />} />
             <Route path="/todos" element={<TodoList />}></Route>
