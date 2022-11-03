@@ -8,7 +8,6 @@ import {
   selectAllPosts,
   getPostsStatus,
   getPostsError,
-  fetchPosts,
   addNewPost,
 } from "../features/todos/todoSlice";
 
@@ -21,14 +20,9 @@ const TodoList = () => {
   const postStatus = useSelector(getPostsStatus);
   const error = useSelector(getPostsError);
 
-  useEffect(() => {
-    if (token === null) {
-      navigate("/signIn");
-    }
-    if (postStatus === "idle") {
-      dispatch(fetchPosts());
-    }
-  }, [postStatus, dispatch]);
+  if (token === null) {
+    navigate("/signIn");
+  }
 
   const [newTodo, setNewTodo] = useState("");
   const handleAddClick = () => {

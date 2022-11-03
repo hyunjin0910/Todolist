@@ -31,6 +31,7 @@ export const addNewPost = createAsyncThunk("posts/addNewPost", async (newTodo) =
         "Content-type": `application/json`,
       },
     });
+    console.log(response.data);
     return response.data;
   } catch (error) {
     return error.response;
@@ -46,7 +47,7 @@ export const deletePost = createAsyncThunk("posts/deletePost", async (id) => {
         Authorization: `Bearer ${accessToken}`,
       },
     });
-    return response.data;
+    return id;
   } catch (error) {
     return error.response;
   }
@@ -74,15 +75,30 @@ const postsSlice = createSlice({
   reducers: {
     postAdded: {
       reducer(state, action) {
+        console.log("action", action.payload);
         state.posts.push(action.payload);
       },
       prepare(content) {
         return {
           payload: {
             content,
+            reactions: {
+              thumbsUp: 0,
+              wow: 0,
+              heart: 0,
+              rocket: 0,
+              coffee: 0,
+            },
           },
         };
       },
+    },
+    reactionAdded(state, action) {
+      const { postId, reaction } = action.payload;
+      const existingPost = state.posts.find((post) => post.id === postId);
+      if (existingPost) {
+        existingPost.reactions[reaction]++;
+      }
     },
   },
   extraReducers(builder) {
@@ -92,8 +108,7 @@ const postsSlice = createSlice({
       })
       .addCase(fetchPosts.fulfilled, (state, action) => {
         state.status = "succeeded";
-        const loadedPosts = action.payload;
-        state.posts = [...loadedPosts];
+        state.posts = state.posts.concat(action.payload);
       })
       .addCase(fetchPosts.rejected, (state, action) => {
         state.status = "failed";
@@ -103,11 +118,22 @@ const postsSlice = createSlice({
         state.posts.push(action.payload);
       })
       .addCase(deletePost.fulfilled, (state, action) => {
-        state.status = "idle";
-        console.log(action.payload);
+        const id = action.payload;
+        if (!id) {
+          console.log("Delete could not complete");
+          return;
+        }
+        const posts = state.posts.filter((post) => post.id !== id);
+        state.posts = posts;
       })
       .addCase(updatePost.fulfilled, (state, action) => {
-        state.status = "idle";
+        if (!action.payload?.id) {
+          console.log("Update could not complete");
+          return;
+        }
+        const { id } = action.payload;
+        const posts = state.posts.filter((post) => post.id !== id);
+        state.posts = [...posts, action.payload];
       });
   },
 });
@@ -116,6 +142,6 @@ export const selectAllPosts = (state) => state.posts.posts;
 export const getPostsStatus = (state) => state.posts.status;
 export const getPostsError = (state) => state.posts.error;
 
-export const { postAdded } = postsSlice.actions;
+export const { postAdded, reactionAdded } = postsSlice.actions;
 
 export default postsSlice.reducer;
