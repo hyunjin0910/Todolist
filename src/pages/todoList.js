@@ -4,25 +4,21 @@ import { useEffect, useState } from "react";
 import TodoItem from "../components/TodoItem";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  selectAllPosts,
-  getPostsStatus,
-  getPostsError,
-  addNewPost,
-} from "../features/todos/todoSlice";
+import { fetchPosts, selectAllPosts, addNewPost } from "../features/todos/todoSlice";
 
 const TodoList = () => {
   const navigate = useNavigate();
-  const token = localStorage.getItem("TOKEN");
   const dispatch = useDispatch();
-
+  const { isLoggedIn, token } = useSelector((state) => state.user.info);
   const posts = useSelector(selectAllPosts);
-  const postStatus = useSelector(getPostsStatus);
-  const error = useSelector(getPostsError);
 
-  if (token === null) {
-    navigate("/signIn");
-  }
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate("/signIn");
+      return;
+    }
+    dispatch(fetchPosts());
+  }, []);
 
   const [newTodo, setNewTodo] = useState("");
   const handleAddClick = () => {

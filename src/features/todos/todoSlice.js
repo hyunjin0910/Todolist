@@ -1,9 +1,8 @@
 import { createSlice, createAsyncThunk, createEntityAdapter } from "@reduxjs/toolkit";
 import axios from "axios";
-import { sub } from "date-fns";
+
 const POSTS_URL = process.env.REACT_APP_URL;
 const URL = `${POSTS_URL}/todos`;
-const accessToken = localStorage.getItem("TOKEN");
 
 const postsAdapter = createEntityAdapter();
 
@@ -12,63 +11,83 @@ const initialState = postsAdapter.getInitialState({
   error: null,
 });
 
-export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
-  try {
-    const response = await axios.get(URL, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-    return response.data;
-  } catch (error) {
-    return error.response;
+export const fetchPosts = createAsyncThunk(
+  "posts/fetchPosts",
+  async (_, { getState }) => {
+    const { user } = getState();
+    const TOKEN = user.info.token;
+    try {
+      const response = await axios.get(URL, {
+        headers: {
+          Authorization: `Bearer ${TOKEN}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      return error.response;
+    }
   }
-});
+);
 
-export const addNewPost = createAsyncThunk("posts/addNewPost", async (newTodo) => {
-  try {
-    const response = await axios.post(URL, newTodo, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        "Content-type": `application/json`,
-      },
-    });
-    return response.data;
-  } catch (error) {
-    return error.response;
+export const addNewPost = createAsyncThunk(
+  "posts/addNewPost",
+  async (newTodo, { getState }) => {
+    const { user } = getState();
+    const TOKEN = user.info.token;
+    try {
+      const response = await axios.post(URL, newTodo, {
+        headers: {
+          Authorization: `Bearer ${TOKEN}`,
+          "Content-type": `application/json`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      return error.response;
+    }
   }
-});
+);
 
-export const deletePost = createAsyncThunk("posts/deletePost", async (id) => {
-  const idURL = URL + `/${id}`;
+export const deletePost = createAsyncThunk(
+  "posts/deletePost",
+  async (id, { getState }) => {
+    const { user } = getState();
+    const TOKEN = user.info.token;
+    const idURL = URL + `/${id}`;
 
-  try {
-    const response = await axios.delete(idURL, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-    return id;
-  } catch (error) {
-    return error.response;
+    try {
+      const response = await axios.delete(idURL, {
+        headers: {
+          Authorization: `Bearer ${TOKEN}`,
+        },
+      });
+      return id;
+    } catch (error) {
+      return error.response;
+    }
   }
-});
+);
 
-export const updatePost = createAsyncThunk("posts/updatePost", async (editData) => {
-  const [id, updatedInfo] = editData;
-  const idURL = URL + `/${id}`;
-  try {
-    const response = await axios.put(idURL, updatedInfo, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        "Content-type": `application/json`,
-      },
-    });
-    return response.data;
-  } catch (error) {
-    return error.response;
+export const updatePost = createAsyncThunk(
+  "posts/updatePost",
+  async (editData, { getState }) => {
+    const { user } = getState();
+    const TOKEN = user.info.token;
+    const [id, updatedInfo] = editData;
+    const idURL = URL + `/${id}`;
+    try {
+      const response = await axios.put(idURL, updatedInfo, {
+        headers: {
+          Authorization: `Bearer ${TOKEN}`,
+          "Content-type": `application/json`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      return error.response;
+    }
   }
-});
+);
 
 const postsSlice = createSlice({
   name: "posts",

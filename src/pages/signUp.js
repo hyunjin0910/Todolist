@@ -1,11 +1,12 @@
 import { Button, Input } from "antd";
 import styled from "@emotion/styled";
 import { useNavigate } from "react-router-dom";
-import { fetchPostSignUp } from "../api/fetchData";
 import useForm from "../hooks/useForm";
-
+import { userSignUp } from "../features/user/userSlice";
+import { useDispatch } from "react-redux";
 const SignUp = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { errors, handleChange, handleSubmit } = useForm({
     initialValue: {
       email: "",
@@ -13,19 +14,14 @@ const SignUp = () => {
     },
 
     onSubmit: async (values) => {
-      const data = await fetchPostSignUp({
-        email: values.email,
-        password: values.password,
-      });
-      const { access_token } = data;
-
-      if (access_token === undefined) {
-        const { message } = data;
-        alert(message);
-      } else {
-        alert("회원가입 성공");
-        navigate("/signIn");
-      }
+      const data = await dispatch(
+        userSignUp({
+          email: values.email,
+          password: values.password,
+        })
+      );
+      const { access_token } = data.payload;
+      if (access_token !== undefined) navigate("/signIn");
     },
 
     validate: ({ email, password }) => {

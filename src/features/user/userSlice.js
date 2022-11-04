@@ -5,8 +5,7 @@ const basicURL = process.env.REACT_APP_URL;
 const initialState = {
   info: {
     isLoggedIn: false,
-    token:
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImplbmV0QGplbmV0LmNvbSIsInN1YiI6MTAyNiwiaWF0IjoxNjY3MzEwNjI3LCJleHAiOjE2Njc5MTU0Mjd9.0c1g3i7QPzAPNNxubEp_B7jTuslYy27Q1wTa_1c33p4",
+    token: "",
   },
   status: "idle",
   error: null,
@@ -26,9 +25,9 @@ export const userSignUp = createAsyncThunk("user/userSignUp", async (signUpUser)
   const URL = `${basicURL}/auth/signup`;
   try {
     const response = await axios.post(URL, signUpUser);
-    return response.data.data;
+    return response.data;
   } catch (error) {
-    return error.response;
+    return error.response.data;
   }
 });
 
@@ -69,7 +68,14 @@ const userSlice = createSlice({
         state.status = "loading";
       })
       .addCase(userSignUp.fulfilled, (state, action) => {
+        const { access_token } = action.payload;
         state.status = "succeeded";
+        if (access_token === undefined) {
+          const { message } = action.payload;
+          alert(message);
+        } else {
+          alert("회원가입 성공");
+        }
         state.info.isLoggedIn = true;
         state.info.token = action.payload;
       })
