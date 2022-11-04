@@ -4,8 +4,7 @@ import "./App.css";
 import "antd/dist/antd.css";
 import { store } from "./store";
 import { Provider } from "react-redux";
-import { fetchPosts } from "./features/todos/todoSlice";
-store.dispatch(fetchPosts());
+
 const App = () => {
   return (
     <div className="app">
