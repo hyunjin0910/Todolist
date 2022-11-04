@@ -10,7 +10,6 @@ const TodoList = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isLoggedIn, token } = useSelector((state) => state.user.info);
-  const posts = useSelector(selectAllPosts);
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -19,7 +18,7 @@ const TodoList = () => {
     }
     dispatch(fetchPosts());
   }, []);
-
+  const posts = useSelector(selectAllPosts);
   const [newTodo, setNewTodo] = useState("");
   const handleAddClick = () => {
     dispatch(addNewPost({ todo: newTodo }));
