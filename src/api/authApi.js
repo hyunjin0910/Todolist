@@ -7,6 +7,8 @@ const userApi = axios.create({
 export const signIn = async (loginUser) => {
   try {
     const response = await userApi.post("/signin", loginUser);
+    const { access_token } = response.data;
+    localStorage.setItem("TOKEN", access_token);
     return response.data;
   } catch (error) {
     return error.response.data;
