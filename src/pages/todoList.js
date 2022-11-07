@@ -3,25 +3,24 @@ import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
 import TodoItem from "../components/TodoItem";
 import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { fetchPosts, selectAllPosts, addNewPost } from "../features/todos/todoSlice";
-
+import { getTodos, addTodos } from "../api/todoApi";
+import { useQuery, useMutation, useQueryClient } from "react-query";
 const TodoList = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { isLoggedIn, token } = useSelector((state) => state.user.info);
+  const token = localStorage.getItem("TOKEN");
+  const queryClient = useQueryClient();
+  const { isLoading, isError, error, data: todos } = useQuery("todos", getTodos);
 
-  useEffect(() => {
-    if (!isLoggedIn) {
-      navigate("/signIn");
-      return;
-    }
-    dispatch(fetchPosts());
-  }, []);
-  const posts = useSelector(selectAllPosts);
+  const addTodoMutation = useMutation(addTodos, {
+    onSuccess: () => {
+      // 화면에 보여주는 데이터를 리프레쉬 해줘야 해서
+      queryClient.invalidateQueries("todos");
+    },
+  });
   const [newTodo, setNewTodo] = useState("");
+
   const handleAddClick = () => {
-    dispatch(addNewPost({ todo: newTodo }));
+    addTodoMutation.mutate({ todo: newTodo });
     setNewTodo("");
   };
   const handleChange = (e) => {
@@ -44,9 +43,11 @@ const TodoList = () => {
         추가하기
       </Button>
       <ListWrapper>
-        {posts.map((todo, idx) => (
-          <TodoItem data={todo} key={idx} />
-        ))}
+        {todos !== undefined ? (
+          todos.map((todo, idx) => <TodoItem data={todo} key={idx} />)
+        ) : (
+          <></>
+        )}
       </ListWrapper>
     </Wrapper>
   );

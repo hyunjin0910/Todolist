@@ -5,7 +5,7 @@ import { Edit2, Trash2, Square, CheckSquare } from "react-feather";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { deletePost, updatePost } from "../features/todos/todoSlice";
-import ReactionButtons from "./Reactions";
+
 
 let TodoItem = ({ data }) => {
   const dispatch = useDispatch();
@@ -78,8 +78,6 @@ let TodoItem = ({ data }) => {
           <Trash2 onClick={handleDelete} />
         </IconContainer>
       </TodoWrapper>
-
-      <ReactionButtons post={data} />
     </>
   );
 };
