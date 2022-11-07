@@ -8,6 +8,9 @@ import { useQuery, useMutation, useQueryClient } from "react-query";
 const TodoList = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("TOKEN");
+  useEffect(() => {
+    if (token === undefined) navigate("/signIn");
+  }, []);
   const queryClient = useQueryClient();
   const { isLoading, isError, error, data: todos } = useQuery("todos", getTodos);
 

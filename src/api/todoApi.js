@@ -37,14 +37,19 @@ export const deleteTodos = async (id) => {
   return response.data;
 };
 
-export const updateTodos = async (id, updatedInfo) => {
-  const response = await todoApi.put(`/todos/${id}`, updatedInfo, {
-    headers: {
-      Authorization: `Bearer ${TOKEN}`,
-      "Content-type": `application/json`,
-    },
-  });
-  return response.data;
+export const updateTodos = async (newInfo) => {
+  const [id, updatedInfo] = newInfo;
+  try {
+    const response = await todoApi.put(`/todos/${id}`, updatedInfo, {
+      headers: {
+        Authorization: `Bearer ${TOKEN}`,
+        "Content-type": `application/json`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    return error.response;
+  }
 };
 
 export default todoApi;
