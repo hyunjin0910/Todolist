@@ -2,11 +2,12 @@ import { Button, Input } from "antd";
 import styled from "@emotion/styled";
 import { useNavigate } from "react-router-dom";
 import useForm from "../hooks/useForm";
-import { userSignUp } from "../features/user/userSlice";
-import { useDispatch } from "react-redux";
+import { useMutation } from "react-query";
+import { signUp } from "../api/authApi";
 const SignUp = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const { mutate: signup, isSuccess } = useMutation(signUp);
+
   const { errors, handleChange, handleSubmit } = useForm({
     initialValue: {
       email: "",
@@ -14,14 +15,16 @@ const SignUp = () => {
     },
 
     onSubmit: async (values) => {
-      const data = await dispatch(
-        userSignUp({
-          email: values.email,
-          password: values.password,
-        })
-      );
-      const { access_token } = data.payload;
-      if (access_token !== undefined) navigate("/signIn");
+      const userData = {
+        email: values.email,
+        password: values.password,
+      };
+      signup(userData);
+
+      if (isSuccess) {
+        alert("회원가입 성공");
+        navigate("/signIn");
+      }
     },
 
     validate: ({ email, password }) => {
