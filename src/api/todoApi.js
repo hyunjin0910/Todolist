@@ -5,21 +5,22 @@ const todoApi = axios.create({
   baseURL: process.env.REACT_APP_URL,
 });
 
-export const getTodos = async () => {
+export const getTodos = async (token) => {
   const response = await todoApi.get("/todos", {
     headers: {
-      Authorization: `Bearer ${TOKEN}`,
+      Authorization: `Bearer ${token}`,
       "Content-type": `application/json`,
     },
   });
   return response.data;
 };
 
-export const addTodos = async (newTodo) => {
+export const addTodos = async (addData) => {
+  const [token, newTodo] = addData;
   try {
     const response = await todoApi.post("/todos", newTodo, {
       headers: {
-        Authorization: `Bearer ${TOKEN}`,
+        Authorization: `Bearer ${token}`,
       },
     });
     return response.data;

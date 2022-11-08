@@ -8,11 +8,17 @@ import { useQuery, useMutation, useQueryClient } from "react-query";
 const TodoList = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("TOKEN");
+
   useEffect(() => {
     if (token === undefined) navigate("/signIn");
   }, []);
   const queryClient = useQueryClient();
-  const { isLoading, isError, error, data: todos } = useQuery("todos", getTodos);
+  const {
+    isLoading,
+    isError,
+    error,
+    data: todos,
+  } = useQuery(["todos", token], () => getTodos(token));
 
   const addTodoMutation = useMutation(addTodos, {
     onSuccess: () => {
@@ -23,7 +29,8 @@ const TodoList = () => {
   const [newTodo, setNewTodo] = useState("");
 
   const handleAddClick = () => {
-    addTodoMutation.mutate({ todo: newTodo });
+    const addData = [token, { todo: newTodo }];
+    addTodoMutation.mutate(addData);
     setNewTodo("");
   };
   const handleChange = (e) => {
