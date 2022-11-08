@@ -1,7 +1,7 @@
 import { Button, Input } from "antd";
 import styled from "@emotion/styled";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import useForm from "../hooks/useForm";
 import { useMutation } from "react-query";
 import { signIn } from "../api/authApi";
@@ -9,7 +9,18 @@ import { signIn } from "../api/authApi";
 const SignIn = () => {
   const navigate = useNavigate();
 
-  const { mutate: login, isSuccess } = useMutation(signIn);
+  const { mutate: login } = useMutation(signIn, {
+    onSuccess: (data) => {
+      const { access_token, message } = data;
+      if (access_token !== undefined) {
+        localStorage.setItem("TOKEN", access_token);
+        navigate("/todos");
+      } else {
+        alert(message);
+        return;
+      }
+    },
+  });
 
   const { errors, handleChange, handleSubmit } = useForm({
     initialValue: {
@@ -22,9 +33,7 @@ const SignIn = () => {
         email: values.email,
         password: values.password,
       };
-      login(userData);
-
-      if (isSuccess) navigate("/todos");
+      await login(userData);
     },
 
     validate: ({ email, password }) => {

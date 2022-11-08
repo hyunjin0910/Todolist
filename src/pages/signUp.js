@@ -6,7 +6,18 @@ import { useMutation } from "react-query";
 import { signUp } from "../api/authApi";
 const SignUp = () => {
   const navigate = useNavigate();
-  const { mutate: signup, isSuccess } = useMutation(signUp);
+  const { mutate: signup } = useMutation(signUp, {
+    onSuccess: (data) => {
+      const { access_token, message } = data;
+      if (access_token !== undefined) {
+        alert("회원가입 성공");
+        navigate("/signIn");
+      } else {
+        alert(message);
+        return;
+      }
+    },
+  });
 
   const { errors, handleChange, handleSubmit } = useForm({
     initialValue: {
@@ -20,11 +31,6 @@ const SignUp = () => {
         password: values.password,
       };
       signup(userData);
-
-      if (isSuccess) {
-        alert("회원가입 성공");
-        navigate("/signIn");
-      }
     },
 
     validate: ({ email, password }) => {
