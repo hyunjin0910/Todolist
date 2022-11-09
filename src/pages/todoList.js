@@ -2,7 +2,7 @@ import { Button, Input } from "antd";
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
 import TodoItem from "../components/TodoItem";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { getTodos, addTodos } from "../api/todoApi";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 const TodoList = () => {
@@ -10,8 +10,8 @@ const TodoList = () => {
   const token = localStorage.getItem("TOKEN");
 
   useEffect(() => {
-    if (token === undefined) navigate("/signIn");
-  }, []);
+    if (token === "" || token === null) navigate("/signIn");
+  }, [token]);
   const queryClient = useQueryClient();
   const {
     isLoading,
@@ -36,30 +36,42 @@ const TodoList = () => {
   const handleChange = (e) => {
     setNewTodo(e.target.value);
   };
-
+  const handleLogout = () => {
+    localStorage.setItem("TOKEN", "");
+    navigate("/signIn");
+  };
   return (
-    <Wrapper>
-      <h1>나의 할일 목록</h1>
-      <Input
-        placeholder="할일을 입력하세요"
-        style={{
-          width: "calc(100% - 200px)",
-        }}
-        size="large"
-        value={newTodo}
-        onChange={handleChange}
-      />
-      <Button type="primary" size="large" onClick={handleAddClick}>
-        추가하기
-      </Button>
-      <ListWrapper>
-        {todos !== undefined ? (
-          todos.map((todo, idx) => <TodoItem data={todo} key={idx} />)
-        ) : (
-          <></>
-        )}
-      </ListWrapper>
-    </Wrapper>
+    <>
+      <span>
+        <Button>
+          <Link to="/">홈</Link>
+        </Button>
+        <Button onClick={handleLogout}>로그아웃</Button>
+      </span>
+
+      <Wrapper>
+        <h1>나의 할일 목록</h1>
+        <Input
+          placeholder="할일을 입력하세요"
+          style={{
+            width: "calc(100% - 200px)",
+          }}
+          size="large"
+          value={newTodo}
+          onChange={handleChange}
+        />
+        <Button type="primary" size="large" onClick={handleAddClick}>
+          추가하기
+        </Button>
+        <ListWrapper>
+          {todos !== undefined ? (
+            todos.map((todo, idx) => <TodoItem data={todo} key={idx} />)
+          ) : (
+            <></>
+          )}
+        </ListWrapper>
+      </Wrapper>
+    </>
   );
 };
 export default TodoList;
