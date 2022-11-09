@@ -1,21 +1,26 @@
 import { Button, Input } from "antd";
 import styled from "@emotion/styled";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import useForm from "../hooks/useForm";
-import { useSelector } from "react-redux";
-import { selectUserInfo, userLogin } from "../features/user/userSlice";
-import { useDispatch } from "react-redux";
-import { useEffect } from "react";
+import { useMutation } from "react-query";
+import { signIn } from "../api/authApi";
+
 const SignIn = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { isLoggedIn, token } = useSelector(selectUserInfo);
-  useEffect(() => {
-    if (isLoggedIn) {
-      navigate("/todos");
-    }
-  }, [isLoggedIn]);
+
+  const { mutate: login } = useMutation(signIn, {
+    onSuccess: (data) => {
+      const { access_token, message } = data;
+      if (access_token !== undefined) {
+        localStorage.setItem("TOKEN", access_token);
+        navigate("/todos");
+      } else {
+        alert(message);
+        return;
+      }
+    },
+  });
 
   const { errors, handleChange, handleSubmit } = useForm({
     initialValue: {
@@ -24,14 +29,11 @@ const SignIn = () => {
     },
 
     onSubmit: async (values) => {
-      const data = await dispatch(
-        userLogin({
-          email: values.email,
-          password: values.password,
-        })
-      );
-      const { access_token } = data;
-      if (access_token !== undefined) navigate("/todos");
+      const userData = {
+        email: values.email,
+        password: values.password,
+      };
+      await login(userData);
     },
 
     validate: ({ email, password }) => {
@@ -88,7 +90,7 @@ const SignIn = () => {
       </FormContainer>
     </Wrapper>
   );
-};;;;
+};;;;;;;
 
 export default SignIn;
 

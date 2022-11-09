@@ -3,17 +3,34 @@ import { Input, Button } from "antd";
 import React from "react";
 import { Edit2, Trash2, Square, CheckSquare } from "react-feather";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { deletePost, updatePost } from "../features/todos/todoSlice";
-import ReactionButtons from "./Reactions";
+import { deleteTodos, updateTodos } from "../api/todoApi";
+import { useQuery, useMutation, useQueryClient } from "react-query";
 
 let TodoItem = ({ data }) => {
-  const dispatch = useDispatch();
+  const token = localStorage.getItem("TOKEN");
+  const queryClient = useQueryClient();
+  const deleteTodoMutation = useMutation(deleteTodos, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("todos");
+    },
+  });
+  const updateTodoMutation = useMutation(updateTodos, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("todos");
+    },
+  });
   const [isEdit, setIsEdit] = useState(false);
   const [changedTodo, setChangedTodo] = useState("");
   const handleCheck = () => {
-    const completeData = [data.id, { todo: data.todo, isCompleted: !data.isCompleted }];
-    dispatch(updatePost(completeData));
+    const checkInfo = [
+      token,
+      data.id,
+      {
+        todo: data.todo,
+        isCompleted: !data.isCompleted,
+      },
+    ];
+    updateTodoMutation.mutate(checkInfo);
   };
 
   const handleChange = (e) => {
@@ -21,8 +38,15 @@ let TodoItem = ({ data }) => {
   };
 
   const saveChange = () => {
-    const editData = [data.id, { todo: changedTodo, isCompleted: data.isCompleted }];
-    dispatch(updatePost(editData));
+    const savedInfo = [
+      token,
+      data.id,
+      {
+        todo: changedTodo,
+        isCompleted: data.isCompleted,
+      },
+    ];
+    updateTodoMutation.mutate(savedInfo);
     setIsEdit(!isEdit);
     setChangedTodo("");
   };
@@ -32,7 +56,8 @@ let TodoItem = ({ data }) => {
     setIsEdit(!isEdit);
   };
   const handleDelete = () => {
-    dispatch(deletePost(data.id));
+    const deleteInfo = [token, data.id];
+    deleteTodoMutation.mutate(deleteInfo);
   };
   return (
     <>
@@ -78,8 +103,6 @@ let TodoItem = ({ data }) => {
           <Trash2 onClick={handleDelete} />
         </IconContainer>
       </TodoWrapper>
-
-      <ReactionButtons post={data} />
     </>
   );
 };

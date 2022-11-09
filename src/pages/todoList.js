@@ -2,53 +2,76 @@ import { Button, Input } from "antd";
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
 import TodoItem from "../components/TodoItem";
-import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { fetchPosts, selectAllPosts, addNewPost } from "../features/todos/todoSlice";
-
+import { useNavigate, Link } from "react-router-dom";
+import { getTodos, addTodos } from "../api/todoApi";
+import { useQuery, useMutation, useQueryClient } from "react-query";
 const TodoList = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { isLoggedIn, token } = useSelector((state) => state.user.info);
+  const token = localStorage.getItem("TOKEN");
 
   useEffect(() => {
-    if (!isLoggedIn) {
-      navigate("/signIn");
-      return;
-    }
-    dispatch(fetchPosts());
-  }, []);
-  const posts = useSelector(selectAllPosts);
+    if (token === "" || token === null) navigate("/signIn");
+  }, [token]);
+  const queryClient = useQueryClient();
+  const {
+    isLoading,
+    isError,
+    error,
+    data: todos,
+  } = useQuery(["todos", token], () => getTodos(token));
+
+  const addTodoMutation = useMutation(addTodos, {
+    onSuccess: () => {
+      // 화면에 보여주는 데이터를 리프레쉬 해줘야 해서
+      queryClient.invalidateQueries("todos");
+    },
+  });
   const [newTodo, setNewTodo] = useState("");
+
   const handleAddClick = () => {
-    dispatch(addNewPost({ todo: newTodo }));
+    const addData = [token, { todo: newTodo }];
+    addTodoMutation.mutate(addData);
     setNewTodo("");
   };
   const handleChange = (e) => {
     setNewTodo(e.target.value);
   };
-
+  const handleLogout = () => {
+    localStorage.setItem("TOKEN", "");
+    navigate("/signIn");
+  };
   return (
-    <Wrapper>
-      <h1>나의 할일 목록</h1>
-      <Input
-        placeholder="할일을 입력하세요"
-        style={{
-          width: "calc(100% - 200px)",
-        }}
-        size="large"
-        value={newTodo}
-        onChange={handleChange}
-      />
-      <Button type="primary" size="large" onClick={handleAddClick}>
-        추가하기
-      </Button>
-      <ListWrapper>
-        {posts.map((todo, idx) => (
-          <TodoItem data={todo} key={idx} />
-        ))}
-      </ListWrapper>
-    </Wrapper>
+    <>
+      <span>
+        <Button>
+          <Link to="/">홈</Link>
+        </Button>
+        <Button onClick={handleLogout}>로그아웃</Button>
+      </span>
+
+      <Wrapper>
+        <h1>나의 할일 목록</h1>
+        <Input
+          placeholder="할일을 입력하세요"
+          style={{
+            width: "calc(100% - 200px)",
+          }}
+          size="large"
+          value={newTodo}
+          onChange={handleChange}
+        />
+        <Button type="primary" size="large" onClick={handleAddClick}>
+          추가하기
+        </Button>
+        <ListWrapper>
+          {todos !== undefined ? (
+            todos.map((todo, idx) => <TodoItem data={todo} key={idx} />)
+          ) : (
+            <></>
+          )}
+        </ListWrapper>
+      </Wrapper>
+    </>
   );
 };
 export default TodoList;
