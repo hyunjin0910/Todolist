@@ -29,21 +29,22 @@ export const addTodos = async (addData) => {
   }
 };
 
-export const deleteTodos = async (id) => {
+export const deleteTodos = async (deleteInfo) => {
+  const [token, id] = deleteInfo;
   const response = await todoApi.delete(`/todos/${id}`, {
     headers: {
-      Authorization: `Bearer ${TOKEN}`,
+      Authorization: `Bearer ${token}`,
     },
   });
   return response.data;
 };
 
 export const updateTodos = async (newInfo) => {
-  const [id, updatedInfo] = newInfo;
+  const [token, id, updatedInfo] = newInfo;
   try {
     const response = await todoApi.put(`/todos/${id}`, updatedInfo, {
       headers: {
-        Authorization: `Bearer ${TOKEN}`,
+        Authorization: `Bearer ${token}`,
         "Content-type": `application/json`,
       },
     });

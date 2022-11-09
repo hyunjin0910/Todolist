@@ -7,6 +7,7 @@ import { deleteTodos, updateTodos } from "../api/todoApi";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 
 let TodoItem = ({ data }) => {
+  const token = localStorage.getItem("TOKEN");
   const queryClient = useQueryClient();
   const deleteTodoMutation = useMutation(deleteTodos, {
     onSuccess: () => {
@@ -22,6 +23,7 @@ let TodoItem = ({ data }) => {
   const [changedTodo, setChangedTodo] = useState("");
   const handleCheck = () => {
     const checkInfo = [
+      token,
       data.id,
       {
         todo: data.todo,
@@ -37,6 +39,7 @@ let TodoItem = ({ data }) => {
 
   const saveChange = () => {
     const savedInfo = [
+      token,
       data.id,
       {
         todo: changedTodo,
@@ -53,7 +56,8 @@ let TodoItem = ({ data }) => {
     setIsEdit(!isEdit);
   };
   const handleDelete = () => {
-    deleteTodoMutation.mutate(data.id);
+    const deleteInfo = [token, data.id];
+    deleteTodoMutation.mutate(deleteInfo);
   };
   return (
     <>
