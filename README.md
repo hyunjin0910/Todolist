@@ -19,13 +19,13 @@
 
 ## 작업 내용
 ### 1. Redux-toolkit으로 작업
-✍️ 작업 내용 기록
-https://velog.io/@jinljin/Redux-toolkit-%ED%88%AC%EB%91%90%EB%A6%AC%EC%8A%A4%ED%8A%B8%EC%97%90-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0feat.%EC%9B%90%ED%8B%B0%EB%93%9C-%ED%94%84%EB%A6%AC%EC%98%A8%EB%B3%B4%EB%94%A9-%EA%B3%BC%EC%A0%9C
+✍️ [작업 내용 기록](https://velog.io/@jinljin/Redux-toolkit-%ED%88%AC%EB%91%90%EB%A6%AC%EC%8A%A4%ED%8A%B8%EC%97%90-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0feat.%EC%9B%90%ED%8B%B0%EB%93%9C-%ED%94%84%EB%A6%AC%EC%98%A8%EB%B3%B4%EB%94%A9-%EA%B3%BC%EC%A0%9C)
+
 
 
 ### 2. React-query로 변경
-✍️ 작업 내용 기록
-https://velog.io/@jinljin/react-query-%ED%88%AC%EB%91%90%EB%A6%AC%EC%8A%A4%ED%8A%B8%EC%97%90-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0feat.%EC%9B%90%ED%8B%B0%EB%93%9C-%ED%94%84%EB%A6%AC%EC%98%A8%EB%B3%B4%EB%94%A9-%EA%B3%BC%EC%A0%9C
+✍️ [작업 내용 기록](https://velog.io/@jinljin/react-query-%ED%88%AC%EB%91%90%EB%A6%AC%EC%8A%A4%ED%8A%B8%EC%97%90-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0feat.%EC%9B%90%ED%8B%B0%EB%93%9C-%ED%94%84%EB%A6%AC%EC%98%A8%EB%B3%B4%EB%94%A9-%EA%B3%BC%EC%A0%9C)
+
 
 ### 3. 백엔드 API로 작업 (현재 진행 중)
 - 기술 스택: TypeScript, node(express), Mysql
