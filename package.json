@@ -1,0 +1,26 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/hyunjin0910/Todolist.git",
+  "author": "Jenet <xuanchen0910@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "client": "cd client && yarn start",
+    "start": "node dist/app.js",
+    "server": "nodemon src/app.ts",
+    "dev": "concurrently --kill-others-on-fail \"yarn client\" \"yarn server\"",
+    "build": "tsc -p ."
+  },
+  "dependencies": {
+    "concurrently": "^7.5.0",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.14",
+    "@types/node": "^18.11.9",
+    "nodemon": "^2.0.20",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.8.4"
+  }
+}
