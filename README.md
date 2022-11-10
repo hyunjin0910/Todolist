@@ -4,13 +4,31 @@
 
 ## 배포 링크 & 데모 영상
 
-👉 [과제 링크](https://lighthearted-donut-8774a9.netlify.app)  
+👉 [과제 링크](https://hyun-jin-todo.vercel.app/todos)  
+
+## 사용한 라이브러리
+
+- UI
+    - emotion
+    - feather-icon
+    - ant design
+- React Router
+- Axios
+- Redux-toolkit
+- React-query
+
+## 작업 내용
+### 1. Redux-toolkit으로 작업
+✍️ 작업 내용 기록
+https://velog.io/@jinljin/Redux-toolkit-%ED%88%AC%EB%91%90%EB%A6%AC%EC%8A%A4%ED%8A%B8%EC%97%90-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0feat.%EC%9B%90%ED%8B%B0%EB%93%9C-%ED%94%84%EB%A6%AC%EC%98%A8%EB%B3%B4%EB%94%A9-%EA%B3%BC%EC%A0%9C
 
 
+### 2. React-query로 변경
+✍️ 작업 내용 기록
+https://velog.io/@jinljin/react-query-%ED%88%AC%EB%91%90%EB%A6%AC%EC%8A%A4%ED%8A%B8%EC%97%90-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0feat.%EC%9B%90%ED%8B%B0%EB%93%9C-%ED%94%84%EB%A6%AC%EC%98%A8%EB%B3%B4%EB%94%A9-%EA%B3%BC%EC%A0%9C
 
-### 데모 영상
-https://user-images.githubusercontent.com/95457808/186325463-9e6873d0-1f7b-4411-8045-9bca001c15dd.mov
-
+### 3. 백엔드 API로 작업 (현재 진행 중)
+- 기술 스택: TypeScript, node(express), Mysql
 
 ## 페이지 설명
 
@@ -52,11 +70,3 @@ https://user-images.githubusercontent.com/95457808/186325463-9e6873d0-1f7b-4411-
     - “취소" 버튼을 누르면 내용이 수정되지 않고 유지
 - [x] 휴지통 모양 아이콘 클릭 시 삭제 가능 
 
-## 사용한 라이브러리
-
-- UI
-    - emotion
-    - feather-icon
-    - ant design
-- React Router
-- Axios
