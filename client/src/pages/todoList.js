@@ -5,6 +5,7 @@ import TodoItem from "../components/TodoItem";
 import { useNavigate, Link } from "react-router-dom";
 import { getTodos, addTodos } from "../api/todoApi";
 import { useQuery, useMutation, useQueryClient } from "react-query";
+import { Home, LogOut } from "react-feather";
 const TodoList = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("TOKEN");
@@ -42,14 +43,13 @@ const TodoList = () => {
   };
   return (
     <>
-      <span>
-        <Button>
-          <Link to="/">홈</Link>
-        </Button>
-        <Button onClick={handleLogout}>로그아웃</Button>
-      </span>
-
       <Wrapper>
+        <span>
+          <Link to="/">
+            <Home style={{ color: "black", width: "50px" }} />
+          </Link>
+          <LogOut style={{ cursor: "pointer", width: "50px" }} onClick={handleLogout} />
+        </span>
         <h1>나의 할일 목록</h1>
         <Input
           placeholder="할일을 입력하세요"
