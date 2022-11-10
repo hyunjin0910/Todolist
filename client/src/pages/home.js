@@ -18,7 +18,6 @@ const Home = () => {
   return (
     <Wrapper>
       <FileText size="40px" />
-      <button onClick={handleTest}>테스트</button>
       <h1 style={{ color: "blue" }}> TO DO LIST</h1>
       <UserWrapper>
         <Button onClick={() => navigate("/signIn")}>로그인하기</Button>
